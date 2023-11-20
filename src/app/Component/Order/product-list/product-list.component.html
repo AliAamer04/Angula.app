@@ -1,0 +1,87 @@
+<div class="mb-3">
+  <label for="" class="form-label">Catagory</label>
+  <!-- <select  #cat class="form-control" name="cat" id="prdCat" (change)="getSelCat(cat.value)"> -->
+  <select class="form-control" name="cat" id="prdCat">
+    <option *ngFor="let cat of catList" [value]="cat.id">{{cat.name}}</option>
+  </select>
+</div>
+<div class="text-secondary">
+  [To be Removed] For Test:
+  {{selectedCatID}}
+  <button type="button" class="btn btn-primary btn-small" (click)="ChangeCat()"> Change Catagory</button>
+</div>
+
+<hr>
+
+
+<table class="table">
+  <thead class="">
+    <tr>
+      <th>No.</th>
+      <th>Name</th>
+      <th>Image</th>
+      <th>Av.Quantity</th>
+      <th>price</th>
+      <th>count</th>
+      <th>buy</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!--
+      trackBY used to  specify objects identity, 
+      and so  enhancs the performance of ngFor in case of changes to the collection, and updated the changed object, without re-build the Dom 
+    -->
+    <!-- 
+      <tr *ngFor="let prd of prdList; let i = index; trackBy:prdTrackByFn"
+      [class.d-none]="selectedCatID!=prd.CatagoryID"
+      [style.background-color]="(prd.quantity==0)? 'yellow':'lightgray'"> 
+    -->
+    <!-- 
+      <tr *ngFor="let prd of prdList; let i = index" [hidden] ="prd.quantity ==0"> 
+      -->
+    <!-- 
+      (?) Das bedeutet, wenn den rechner ein value dazu fiindet, dann zeigt. wenn nicht dann mach gar nichts. 
+    -->
+    <!-- 
+      ngIf (Stuructural diresctives in general), change in Dom, 
+      while class binding or [hidden] just change the dom element to be hidden
+    so.use ngIf, if collection isn't changed requarly in the runtime, and use binding, if the collection is requarly changed.
+    -We can't use 2 structural directives in the same HTML element, but we can use <ng-container>
+       that will not reflect on the actual dom. 
+    -->
+    <!-- 
+    <ng-container *ngFor="let prd of prdList; let i = index">
+      <tr *ngIf="prd.quantity != 0"> 
+        -->
+    <tr *ngFor="let prd of prdList; let i = index"
+      [ngClass]="{'bg-warning':prd.quantity==0,'text-primary': prd.quantity==0}">
+      <td>{{i+1}}</td>
+      <!-- safe naviagation operator  -->
+      <td>{{prd.name}}</td>
+
+      <!-- <td><img LightBox highlightColor="red" [src]="prd.imgURL" alt=""></td> -->
+      <td>
+        <!-- <img LightBox="red" [src]="prd.imgURL" alt=""> -->
+        <!-- <td><img [LightBox]="ReadfromPropInTS" [src]="prd.imgURL" alt=""></td> -->
+        <img LightBox="red" defaultColor ="yellow" [src]="prd.imgURL" alt="">
+      </td>
+
+      <td>
+        <div *ngIf="prd.quantity != 0; else outOfStock">{{prd.quantity}}</div>
+        <ng-template #outOfStock>Out Of Stock</ng-template>
+
+      </td>
+      <td>{{prd.price}}</td>
+
+      <!-- Template variable -->
+      <td><input #itemsCount type="number" class="form-control"></td>
+
+      <td> <button type="button" class="btn btn-secondary" (click)="buy(prd.price, itemsCount.value)">buy</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<hr>
+<h3>
+  Order Total price: {{orderTtotalPrice}}
+</h3>
