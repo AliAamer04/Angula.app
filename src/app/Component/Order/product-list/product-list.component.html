@@ -71,7 +71,7 @@
         <ng-template #outOfStock>Out Of Stock</ng-template>
 
       </td>
-      <td>{{prd.price}}</td>
+      <td>{{prd.price | currency : 'EUR' : 'symbol'}}</td>
 
       <!-- Template variable -->
       <td><input #itemsCount type="number" class="form-control"></td>
